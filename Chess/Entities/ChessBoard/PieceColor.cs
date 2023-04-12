@@ -1,6 +1,6 @@
 ﻿namespace Chess.Entities.ChessBoard;
 
-internal enum PieceColor
+internal enum PieceColor : byte
 {
     White,
     Black

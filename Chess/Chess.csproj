@@ -7,4 +7,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\Gabriel\Desktop\C#\ChessGame\Chess\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\Gabriel\Desktop\C#\ChessGame\Chess\.editorconfig" />
+  </ItemGroup>
+
 </Project>

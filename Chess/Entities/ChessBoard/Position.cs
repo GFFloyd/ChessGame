@@ -1,6 +1,6 @@
 ﻿namespace Chess.Entities.ChessBoard;
 
-internal class Position
+internal struct Position
 {
     public byte Row { get; set; }
     public byte Column { get; set; }
