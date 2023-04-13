@@ -9,4 +9,8 @@ internal struct Position
         Row = row;
         Column = col;
     }
+    public override string ToString()
+    {
+        return $"{Row}, {Column}";
+    }
 }

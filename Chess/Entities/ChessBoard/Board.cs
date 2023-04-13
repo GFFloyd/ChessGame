@@ -28,6 +28,7 @@ internal class Board
     }
     public void PlacePiece(Piece piece, Position position)
     {
+        //Checks for a valid piece placement before placing it onto the matrix
         if (CheckIfThereIsPiece(position))
         {
             throw new BoardException("Invalid piece placement, a piece already exists there.");
