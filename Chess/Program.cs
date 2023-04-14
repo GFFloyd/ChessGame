@@ -7,12 +7,28 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        Board board = new(8, 8);
-        board.PlacePiece(new Rook(board, PieceColor.White), new Position(0, 2));
-        board.PlacePiece(new Rook(board, PieceColor.White), new Position(0, 0));
-        board.PlacePiece(new Queen(board, PieceColor.Black), new Position(3, 5));
-        board.PlacePiece(new Queen(board, PieceColor.Black), new Position(3, 4));
-        Screen.PrintBoard(board);
+        try
+        {
+            ChessMatch match = new ChessMatch();
+            while (!match.IsFinished)
+            {
+                Console.Clear();
+                Screen.PrintBoard(match.Board);
+
+                Console.Write("Origin: ");
+                Position origin = Screen.ReadPosition().ToPosition();
+                Console.Write("Target: ");
+                Position target = Screen.ReadPosition().ToPosition();
+
+                match.MakeMove(origin, target);
+            }
+
+        }
+        catch (BoardException e)
+        {
+            Console.WriteLine(e.Message);
+        }
+
 
     }
 }

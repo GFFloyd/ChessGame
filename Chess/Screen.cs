@@ -1,4 +1,5 @@
 ﻿using Chess.Entities.ChessBoard;
+using Chess.Entities.GameLogic;
 
 namespace Chess;
 
@@ -60,5 +61,12 @@ internal class Screen
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Write(piece);
         }
+    }
+    public static AlgebraicNotation ReadPosition()
+    {
+        string str = Console.ReadLine();
+        char col = str[0];
+        char row = str[1];
+        return new AlgebraicNotation(col, row);
     }
 }

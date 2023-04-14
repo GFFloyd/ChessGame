@@ -36,6 +36,18 @@ internal class Board
         _pieces[position.Row, position.Column] = piece;
         piece.Position = position;
     }
+    public Piece? TakePiece(Position position)
+    {
+        //Takes piece if it has a valid piece in the square
+        if (Piece(position) == null)
+        {
+            return null;
+        }
+        Piece piece = Piece(position);
+        piece.Position = null;
+        _pieces[position.Row, position.Column] = null;
+        return piece;
+    }
     public bool ValidPosition(Position position)
     {
         //Checks for a existing row and column

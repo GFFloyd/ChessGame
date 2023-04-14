@@ -13,4 +13,8 @@ internal class Piece
         ChessBoard = board;
         Color = color;
     }
+    public void IncrementMovimentQuantity()
+    {
+        Movements++;
+    }
 }
