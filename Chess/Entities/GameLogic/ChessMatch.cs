@@ -19,13 +19,15 @@ internal class ChessMatch
     }
     public void MakeMove(Position origin, Position target)
     {
+        //Piece movement logic, capturedPiece variable should be stored in a "captured pieces list"
         Piece piece = Board.TakePiece(origin);
         piece.IncrementMovimentQuantity();
-        Piece takenPiece = Board.TakePiece(target);
+        Piece capturedPiece = Board.TakePiece(target);
         Board.PlacePiece(piece, target);
     }
     public void StartingPosition()
     {
+        //TODO: instanciate initial pieces into their respective places
         Board.PlacePiece(new Rook(Board, PieceColor.White), new Position(0, 0));
         Board.PlacePiece(new Queen(Board, PieceColor.Black), new Position(3, 5));
         Board.PlacePiece(new Rook(Board, PieceColor.White), new Position(0, 2));

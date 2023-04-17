@@ -1,6 +1,6 @@
 ﻿namespace Chess.Entities.ChessBoard;
 
-internal class Piece
+internal abstract class Piece
 {
     public Position? Position { get; set; }
     public PieceColor? Color { get; set; }
@@ -17,4 +17,11 @@ internal class Piece
     {
         Movements++;
     }
+    public bool CanMove(Position position)
+    {
+        //it checks if a square has a opposite color piece or if it's empty
+        Piece piece = ChessBoard.Piece(position);
+        return piece != null || piece.Color != Color;
+    }
+    public abstract bool[,] PossibleMovements();
 }

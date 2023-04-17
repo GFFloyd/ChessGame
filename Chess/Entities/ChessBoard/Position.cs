@@ -9,6 +9,11 @@ internal struct Position
         Row = row;
         Column = col;
     }
+    public void DefineValues(byte row, byte col)
+    {
+        Row = row;
+        Column = col;
+    }
     public override string ToString()
     {
         return $"{Row}, {Column}";
