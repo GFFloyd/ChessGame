@@ -11,4 +11,8 @@ internal class Bishop : Piece
     {
         return "B";
     }
+    public override bool[,] PossibleMovements()
+    {
+        throw new NotImplementedException();
+    }
 }

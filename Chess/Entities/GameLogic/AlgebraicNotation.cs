@@ -14,7 +14,7 @@ internal class AlgebraicNotation
     public Position ToPosition()
     {
         //Converts algebraic notation into 2D array coordinates
-        return new Position((byte)('8' - Row), (byte)(Column - 'a'));
+        return new Position('8' - Row, Column - 'a');
     }
     public override string ToString()
     {

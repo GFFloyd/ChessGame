@@ -15,43 +15,84 @@ internal class Rook : Piece
     {
         bool[,] booleanArray = new bool[ChessBoard.Row, ChessBoard.Column];
 
-        Position position = new(0, 0);
+        Position position = new Position(0, 0);
 
-
-        for (int i = -1; i % 2 != 0 && i <= 1; i++)
+        position.DefineValues(Position.Row - 1, Position.Column);
+        while (ChessBoard.ValidPosition(position) && CanMove(position))
         {
-            for (int j = -1; j % 2 != 0 && j <= 1; j++)
+            booleanArray[position.Row, position.Column] = true;
+            if (ChessBoard.Piece(position) != null && ChessBoard.Piece(position).Color != Color)
             {
-                if (i != j)
-                {
-                    position.DefineValues((byte)(ChessBoard.Row + i), (byte)(ChessBoard.Column + j));
-                    while (ChessBoard.ValidPosition(position) && CanMove(position))
-                    {
-                        booleanArray[position.Row, position.Column] = true;
-                        if (ChessBoard.Piece(position) != null && ChessBoard.Piece(position).Color != Color)
-                        {
-                            break;
-                        }
-                        if (i < 0 && j == 0)
-                        {
-                            position.Row -= 1;
-                        }
-                        else if (i > 0 && j == 0)
-                        {
-                            position.Row += 1;
-                        }
-                        else if (i == 0 && j < 0)
-                        {
-                            position.Column -= 1;
-                        }
-                        else
-                        {
-                            position.Column += 1;
-                        }
-                    }
-                }
+                break;
             }
+            position.Row -= 1;
         }
+        position.DefineValues(Position.Row + 1, Position.Column);
+        while (ChessBoard.ValidPosition(position) && CanMove(position))
+        {
+            booleanArray[position.Row, position.Column] = true;
+            if (ChessBoard.Piece(position) != null && ChessBoard.Piece(position).Color != Color)
+            {
+                break;
+            }
+            position.Row += 1;
+        }
+
+        position.DefineValues(Position.Row, Position.Column + 1);
+        while (ChessBoard.ValidPosition(position) && CanMove(position))
+        {
+            booleanArray[position.Row, position.Column] = true;
+            if (ChessBoard.Piece(position) != null && ChessBoard.Piece(position).Color != Color)
+            {
+                break;
+            }
+            position.Column += 1;
+        }
+        position.DefineValues(Position.Row, Position.Column - 1);
+        while (ChessBoard.ValidPosition(position) && CanMove(position))
+        {
+            booleanArray[position.Row, position.Column] = true;
+            if (ChessBoard.Piece(position) != null && ChessBoard.Piece(position).Color != Color)
+            {
+                break;
+            }
+            position.Column -= 1;
+        }
+
+        //for (int i = -1; i % 2 != 0 && i <= 1; i++)
+        //{
+        //    for (int j = -1; j % 2 != 0 && j <= 1; j++)
+        //    {
+        //        if (i != j)
+        //        {
+        //            position.DefineValues((byte)(position.Row + i), (byte)(position.Column + j));
+        //            while (ChessBoard.ValidPosition(position) && CanMove(position))
+        //            {
+        //                booleanArray[position.Row, position.Column] = true;
+        //                if (ChessBoard.Piece(position) != null && ChessBoard.Piece(position).Color != Color)
+        //                {
+        //                    break;
+        //                }
+        //                if (i < 0 && j == 0)
+        //                {
+        //                    position.Row--;
+        //                }
+        //                else if (i > 0 && j == 0)
+        //                {
+        //                    position.Row++;
+        //                }
+        //                else if (i == 0 && j < 0)
+        //                {
+        //                    position.Column--;
+        //                }
+        //                else
+        //                {
+        //                    position.Column++;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
         return booleanArray;
     }
 }

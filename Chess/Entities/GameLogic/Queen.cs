@@ -11,4 +11,8 @@ internal class Queen : Piece
     {
         return "Q";
     }
+    public override bool[,] PossibleMovements()
+    {
+        throw new NotImplementedException();
+    }
 }

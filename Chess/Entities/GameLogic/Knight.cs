@@ -11,4 +11,8 @@ internal class Knight : Piece
     {
         return "N";
     }
+    public override bool[,] PossibleMovements()
+    {
+        throw new NotImplementedException();
+    }
 }

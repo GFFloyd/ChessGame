@@ -2,17 +2,17 @@
 
 internal class Board
 {
-    public byte Row { get; set; }
-    public byte Column { get; set; }
+    public int Row { get; set; }
+    public int Column { get; set; }
     private readonly Piece[,] _pieces;
 
-    public Board(byte row, byte col)
+    public Board(int row, int col)
     {
         Row = row;
         Column = col;
         _pieces = new Piece[row, col];
     }
-    public Piece Piece(byte row, byte col)
+    public Piece Piece(int row, int col)
     {
         return _pieces[row, col];
     }

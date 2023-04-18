@@ -29,8 +29,8 @@ internal class ChessMatch
     {
         //TODO: instanciate initial pieces into their respective places
         Board.PlacePiece(new Rook(Board, PieceColor.White), new Position(0, 0));
-        Board.PlacePiece(new Queen(Board, PieceColor.Black), new Position(3, 5));
+        Board.PlacePiece(new King(Board, PieceColor.White), new Position(3, 5));
         Board.PlacePiece(new Rook(Board, PieceColor.White), new Position(0, 2));
-        Board.PlacePiece(new Queen(Board, PieceColor.Black), new Position(3, 4));
+        Board.PlacePiece(new King(Board, PieceColor.Black), new Position(3, 3));
     }
 }

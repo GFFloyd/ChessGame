@@ -11,4 +11,8 @@ internal class Pawn : Piece
     {
         return "P";
     }
+    public override bool[,] PossibleMovements()
+    {
+        throw new NotImplementedException();
+    }
 }

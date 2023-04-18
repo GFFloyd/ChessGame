@@ -17,6 +17,11 @@ internal class Program
 
                 Console.Write("Origin: ");
                 Position origin = Screen.ReadPosition().ToPosition();
+
+                //bool[,] possibleMoves = match.Board.Piece(origin).PossibleMovements();
+                //Console.Clear();
+                //Screen.PrintBoard(match.Board, possibleMoves);
+
                 Console.Write("Target: ");
                 Position target = Screen.ReadPosition().ToPosition();
 

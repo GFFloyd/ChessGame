@@ -1,15 +1,15 @@
 ﻿namespace Chess.Entities.ChessBoard;
 
-internal struct Position
+internal class Position
 {
-    public byte Row { get; set; }
-    public byte Column { get; set; }
-    public Position(byte row, byte col)
+    public int Row { get; set; }
+    public int Column { get; set; }
+    public Position(int row, int col)
     {
         Row = row;
         Column = col;
     }
-    public void DefineValues(byte row, byte col)
+    public void DefineValues(int row, int col)
     {
         Row = row;
         Column = col;

@@ -23,7 +23,7 @@ internal class King : Piece
         {
             for (int j = -1; j <= 1; j++)
             {
-                position.DefineValues((byte)(position.Row + i), (byte)(position.Column + j));
+                position.DefineValues(i + position.Row, j + position.Column);
                 if (ChessBoard.ValidPosition(position) && CanMove(position))
                 {
                     booleanArray[position.Row, position.Column] = true;
