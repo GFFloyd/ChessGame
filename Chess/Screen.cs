@@ -5,83 +5,34 @@ namespace Chess;
 
 internal class Screen
 {
-    //public static void PrintBoard(Board board)
-    //{
-    //    ConsoleColor whiteSquares = ConsoleColor.DarkYellow;
-    //    ConsoleColor blackSquares = ConsoleColor.DarkBlue;
-    //    for (byte i = 0; i < board.Row; i++)
-    //    {
-    //        //Prints the row numbers on the left
-    //        Console.Write($"{8 - i} ");
-    //        for (byte j = 0; j < board.Column; j++)
-    //        {
-    //            int total = i + j;
-    //            //this loop prints the board in a chessboard-like pattern
-    //            if (total % 2 == 0)
-    //            {
-    //                //if total is even, it will print in a different color than its odd counterpart
-    //                //and it checks if the square has a piece, then it prints the piece instead
-    //                //of a blank square
-    //                Console.BackgroundColor = whiteSquares;
-    //                PrintPiece(board.Piece(i, j));
-    //            }
-    //            else
-    //            {
-    //                Console.BackgroundColor = blackSquares;
-    //                PrintPiece(board.Piece(i, j));
-    //            }
-    //        }
-    //        Console.BackgroundColor = ConsoleColor.Black;
-    //        Console.ForegroundColor = ConsoleColor.Gray;
-    //        Console.WriteLine();
-    //    }
-    //    Console.WriteLine("  abcdefgh");
-    //}
-    //public static void PrintBoard(Board board, bool[,] possibleMoves)
-    //{
-    //    ConsoleColor whiteSquares = ConsoleColor.DarkYellow;
-    //    ConsoleColor blackSquares = ConsoleColor.DarkBlue;
-    //    ConsoleColor movementSquares = ConsoleColor.Gray;
-    //    for (byte i = 0; i < board.Row; i++)
-    //    {
-    //        //Prints the row numbers on the left
-    //        Console.Write($"{8 - i} ");
-    //        for (byte j = 0; j < board.Column; j++)
-    //        {
-    //            int total = i + j;
-    //            //this loop prints the board in a chessboard-like pattern
-    //            if (total % 2 == 0 && !possibleMoves[i, j])
-    //            {
-    //                //if total is even, it will print in a different color than its odd counterpart
-    //                //and it checks if the square has a piece, then it prints the piece instead
-    //                //of a blank square
-    //                Console.BackgroundColor = whiteSquares;
-    //            }
-    //            else if (total % 2 != 0 && !possibleMoves[i, j])
-    //            {
-    //                Console.BackgroundColor = blackSquares;
-    //            }
-    //            else if (possibleMoves[i, j])
-    //            {
-    //                Console.BackgroundColor = movementSquares;
-    //            }
-    //            PrintPiece(board.Piece(i, j));
-    //            Console.BackgroundColor = ConsoleColor.Black;
-    //            Console.ForegroundColor = ConsoleColor.Gray;
-    //        }
-    //        Console.WriteLine();
-    //    }
-    //    Console.WriteLine("  abcdefgh");
-    //}
     public static void PrintBoard(Board board)
     {
+        ConsoleColor whiteSquares = ConsoleColor.DarkYellow;
+        ConsoleColor blackSquares = ConsoleColor.DarkBlue;
         for (byte i = 0; i < board.Row; i++)
         {
+            //Prints the row numbers on the left
             Console.Write($"{8 - i} ");
             for (byte j = 0; j < board.Column; j++)
             {
-                PrintPiece(board.Piece(i, j));
+                int total = i + j;
+                //this loop prints the board in a chessboard-like pattern
+                if (total % 2 == 0)
+                {
+                    //if total is even, it will print in a different color than its odd counterpart
+                    //and it checks if the square has a piece, then it prints the piece instead
+                    //of a blank square
+                    Console.BackgroundColor = whiteSquares;
+                    PrintPiece(board.Piece(i, j));
+                }
+                else
+                {
+                    Console.BackgroundColor = blackSquares;
+                    PrintPiece(board.Piece(i, j));
+                }
             }
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine();
         }
         Console.WriteLine("  abcdefgh");
@@ -93,19 +44,30 @@ internal class Screen
         ConsoleColor movementSquares = ConsoleColor.Gray;
         for (byte i = 0; i < board.Row; i++)
         {
+            //Prints the row numbers on the left
             Console.Write($"{8 - i} ");
             for (byte j = 0; j < board.Column; j++)
             {
-                if (possibleMoves[i, j])
+                int total = i + j;
+                //this loop prints the board in a chessboard-like pattern
+                if (total % 2 == 0 && !possibleMoves[i, j])
                 {
+                    //if total is even, it will print in a different color than its odd counterpart
+                    //and it checks if the square has a piece, then it prints the piece instead
+                    //of a blank square
                     Console.BackgroundColor = whiteSquares;
                 }
-                else
+                else if (total % 2 != 0 && !possibleMoves[i, j])
                 {
-                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = blackSquares;
+                }
+                else if (possibleMoves[i, j])
+                {
+                    Console.BackgroundColor = movementSquares;
                 }
                 PrintPiece(board.Piece(i, j));
                 Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
             Console.WriteLine();
         }
@@ -115,7 +77,7 @@ internal class Screen
     {
         if (piece == null)
         {
-            Console.Write("-");
+            Console.Write(" ");
         }
         else
         {
@@ -126,7 +88,7 @@ internal class Screen
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.ForegroundColor = ConsoleColor.Black;
                 Console.Write(piece);
             }
         }
