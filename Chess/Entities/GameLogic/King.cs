@@ -14,7 +14,7 @@ internal class King : Piece
     }
     public override bool[,] PossibleMovements()
     {
-        bool[,] booleanArray = new bool[ChessBoard.Row, ChessBoard.Column];
+        bool[,] possibleMovesArray = new bool[ChessBoard.Row, ChessBoard.Column];
 
         Position position = new(0, 0);
         //Algorithm to check if a king can move to its adjacent squares:
@@ -26,10 +26,10 @@ internal class King : Piece
                 position.DefineValues(i + Position.Row, j + Position.Column);
                 if (ChessBoard.ValidPosition(position) && CanMove(position))
                 {
-                    booleanArray[position.Row, position.Column] = true;
+                    possibleMovesArray[position.Row, position.Column] = true;
                 }
             }
         }
-        return booleanArray;
+        return possibleMovesArray;
     }
 }
