@@ -8,6 +8,8 @@ internal class ChessMatch
     public int Turn { get; private set; }
     public PieceColor CurrentPlayer { get; private set; }
     public bool IsFinished { get; private set; }
+    private HashSet<Piece> Pieces { get; set; }
+    private HashSet<Piece> CapturedPieces { get; set; }
 
     public ChessMatch()
     {
@@ -15,6 +17,8 @@ internal class ChessMatch
         Turn = 1;
         CurrentPlayer = PieceColor.White;
         IsFinished = false;
+        CapturedPieces = new HashSet<Piece>();
+        Pieces = new HashSet<Piece>();
         StartingPosition();
     }
     public void MakeMove(Position origin, Position target)
@@ -24,6 +28,10 @@ internal class ChessMatch
         piece.IncrementMovimentQuantity();
         Piece capturedPiece = Board.TakePiece(target);
         Board.PlacePiece(piece, target);
+        if (capturedPiece != null)
+        {
+            CapturedPieces.Add(capturedPiece);
+        }
     }
     public void GamePlay(Position origin, Position target)
     {
@@ -57,12 +65,42 @@ internal class ChessMatch
     {
         CurrentPlayer = CurrentPlayer == PieceColor.White ? PieceColor.Black : PieceColor.White;
     }
+    public HashSet<Piece> CapturedPiecesSet(PieceColor color)
+    {
+        HashSet<Piece> result = new HashSet<Piece>();
+        foreach (Piece piece in CapturedPieces)
+        {
+            if (piece.Color == color)
+            {
+                result.Add(piece);
+            }
+        }
+        return result;
+    }
+    public HashSet<Piece> PiecesInPlaySet(PieceColor color)
+    {
+        HashSet<Piece> result = new HashSet<Piece>();
+        foreach (Piece piece in Pieces)
+        {
+            if (piece.Color == color)
+            {
+                result.Add(piece);
+            }
+        }
+        result.ExceptWith(CapturedPiecesSet(color));
+        return result;
+    }
+    public void PlaceNewPiece(char row, char col, Piece piece)
+    {
+        Board.PlacePiece(piece, new AlgebraicNotation(row, col).ToPosition());
+        Pieces.Add(piece);
+    }
     public void StartingPosition()
     {
         //TODO: instanciate initial pieces into their respective places
-        Board.PlacePiece(new Rook(Board, PieceColor.White), new Position(0, 0));
-        Board.PlacePiece(new King(Board, PieceColor.White), new Position(3, 5));
-        Board.PlacePiece(new Rook(Board, PieceColor.White), new Position(0, 2));
-        Board.PlacePiece(new King(Board, PieceColor.Black), new Position(3, 3));
+        PlaceNewPiece('a', '8', new Rook(Board, PieceColor.White));
+        PlaceNewPiece('c', '8', new Rook(Board, PieceColor.White));
+        PlaceNewPiece('d', '5', new King(Board, PieceColor.Black));
+        PlaceNewPiece('f', '5', new King(Board, PieceColor.White));
     }
 }

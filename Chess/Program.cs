@@ -15,11 +15,7 @@ internal class Program
                 try
                 {
                     Console.Clear();
-                    Screen.PrintBoard(match.Board);
-                    Console.WriteLine();
-                    Console.WriteLine($"Turn: {match.Turn}");
-                    Console.WriteLine($"Awaiting move by {match.CurrentPlayer}");
-
+                    Screen.PrintMatch(match);
                     Console.Write("Origin: ");
                     Position origin = Screen.ReadPosition().ToPosition();
                     match.ValidateOriginPosition(origin);
