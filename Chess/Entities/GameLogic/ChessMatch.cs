@@ -4,9 +4,9 @@ namespace Chess.Entities.GameLogic;
 
 internal class ChessMatch
 {
-    public Board Board { get; set; }
-    private readonly int Turn;
-    private readonly PieceColor CurrentPlayer;
+    public Board Board { get; private set; }
+    public int Turn { get; private set; }
+    public PieceColor CurrentPlayer { get; private set; }
     public bool IsFinished { get; private set; }
 
     public ChessMatch()
@@ -24,6 +24,38 @@ internal class ChessMatch
         piece.IncrementMovimentQuantity();
         Piece capturedPiece = Board.TakePiece(target);
         Board.PlacePiece(piece, target);
+    }
+    public void GamePlay(Position origin, Position target)
+    {
+        MakeMove(origin, target);
+        Turn++;
+        ChangePlayer();
+    }
+    public void ValidateOriginPosition(Position origin)
+    {
+        if (Board.Piece(origin) == null)
+        {
+            throw new BoardException("There's no piece at this position");
+        }
+        if (CurrentPlayer != Board.Piece(origin).Color)
+        {
+            throw new BoardException("The piece in this position does not belong to you");
+        }
+        if (!Board.Piece(origin).CheckIfThereArePossibleMoves())
+        {
+            throw new BoardException("This piece does not have valid moves");
+        }
+    }
+    public void ValidateTargetPosition(Position origin, Position target)
+    {
+        if (!Board.Piece(origin).CanMoveTo(target))
+        {
+            throw new BoardException("Target position is invalid");
+        }
+    }
+    public void ChangePlayer()
+    {
+        CurrentPlayer = CurrentPlayer == PieceColor.White ? PieceColor.Black : PieceColor.White;
     }
     public void StartingPosition()
     {

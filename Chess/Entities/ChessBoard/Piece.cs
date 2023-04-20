@@ -23,5 +23,24 @@ internal abstract class Piece
         Piece piece = ChessBoard.Piece(position);
         return piece == null || piece.Color != Color;
     }
+    public bool CheckIfThereArePossibleMoves()
+    {
+        bool[,] movements = PossibleMovements();
+        for (int i = 0; i < ChessBoard.Row; i++)
+        {
+            for (int j = 0; j < ChessBoard.Column; j++)
+            {
+                if (movements[i, j])
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public bool CanMoveTo(Position origin)
+    {
+        return PossibleMovements()[origin.Row, origin.Column];
+    }
     public abstract bool[,] PossibleMovements();
 }

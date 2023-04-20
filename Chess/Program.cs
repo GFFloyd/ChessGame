@@ -12,21 +12,34 @@ internal class Program
             ChessMatch match = new ChessMatch();
             while (!match.IsFinished)
             {
-                Console.Clear();
-                Screen.PrintBoard(match.Board);
+                try
+                {
+                    Console.Clear();
+                    Screen.PrintBoard(match.Board);
+                    Console.WriteLine();
+                    Console.WriteLine($"Turn: {match.Turn}");
+                    Console.WriteLine($"Awaiting move by {match.CurrentPlayer}");
 
-                Console.Write("Origin: ");
-                Position origin = Screen.ReadPosition().ToPosition();
-                
+                    Console.Write("Origin: ");
+                    Position origin = Screen.ReadPosition().ToPosition();
+                    match.ValidateOriginPosition(origin);
 
-                bool[,] possibleMoves = match.Board.Piece(origin).PossibleMovements();
-                Console.Clear();
-                Screen.PrintBoard(match.Board, possibleMoves);
 
-                Console.Write("Target: ");
-                Position target = Screen.ReadPosition().ToPosition();
+                    bool[,] possibleMoves = match.Board.Piece(origin).PossibleMovements();
+                    Console.Clear();
+                    Screen.PrintBoard(match.Board, possibleMoves);
 
-                match.MakeMove(origin, target);
+                    Console.Write("Target: ");
+                    Position target = Screen.ReadPosition().ToPosition();
+                    match.ValidateTargetPosition(origin, target);
+
+                    match.GamePlay(origin, target);
+                }
+                catch (BoardException e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.ReadLine();
+                }
             }
 
         }
