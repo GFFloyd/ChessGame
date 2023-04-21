@@ -24,7 +24,7 @@ internal class King : Piece
             for (int j = -1; j <= 1; j++)
             {
                 position.DefineValues(i + Position.Row, j + Position.Column);
-                if (ChessBoard.ValidPosition(position) && CanMove(position))
+                if (ChessBoard.IsItAValidPosition(position) && CanMove(position))
                 {
                     possibleMovesArray[position.Row, position.Column] = true;
                 }

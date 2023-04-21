@@ -12,6 +12,10 @@ internal class Screen
         PrintCapturedPieces(match);
         Console.WriteLine($"Turn: {match.Turn}");
         Console.WriteLine($"Awaiting move by {match.CurrentPlayer}");
+        if (match.Check)
+        {
+            Console.WriteLine("YOU ARE IN CHECK");
+        }
     }
     private static void PrintCapturedPieces(ChessMatch match)
     {
@@ -27,7 +31,7 @@ internal class Screen
     private static void PrintSet(HashSet<Piece> pieces)
     {
         Console.Write("[");
-        foreach(Piece piece in pieces)
+        foreach (Piece piece in pieces)
         {
             Console.Write($"{piece}");
         }
@@ -124,7 +128,11 @@ internal class Screen
     }
     public static AlgebraicNotation ReadPosition()
     {
-        string str = Console.ReadLine();
+        string str = Console.ReadLine() ?? string.Empty;
+        if (str == string.Empty)
+        {
+            throw new BoardException("You must type a valid Origin/Target");
+        }
         char col = str[0];
         char row = str[1];
         return new AlgebraicNotation(col, row);

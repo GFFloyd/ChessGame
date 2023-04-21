@@ -17,6 +17,10 @@ internal abstract class Piece
     {
         Movements++;
     }
+    public void DecrementMovementQuantity()
+    {
+        Movements--;
+    }
     public bool CanMove(Position position)
     {
         //it checks if a square has a opposite color piece or if it's empty

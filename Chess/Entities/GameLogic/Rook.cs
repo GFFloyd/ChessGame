@@ -25,7 +25,7 @@ internal class Rook : Piece
                 if (i != j && i != -j)
                 {
                     position.DefineValues(Position.Row + i, Position.Column + j);
-                    while (ChessBoard.ValidPosition(position) && CanMove(position))
+                    while (ChessBoard.IsItAValidPosition(position) && CanMove(position))
                     {
                         possibleMovesArray[position.Row, position.Column] = true;
                         //if there's a piece in a square or if it's an oppposite color piece, the loop breaks
