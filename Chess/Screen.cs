@@ -11,10 +11,18 @@ internal class Screen
         Console.WriteLine();
         PrintCapturedPieces(match);
         Console.WriteLine($"Turn: {match.Turn}");
-        Console.WriteLine($"Awaiting move by {match.CurrentPlayer}");
-        if (match.Check)
+        if (!match.IsFinished)
         {
-            Console.WriteLine("YOU ARE IN CHECK");
+            Console.WriteLine($"Awaiting move by {match.CurrentPlayer}");
+            if (match.Check)
+            {
+                Console.WriteLine("YOU ARE IN CHECK");
+            }
+        }
+        else
+        {
+            Console.WriteLine("CHECK-MATE");
+            Console.WriteLine($"Winner: {match.CurrentPlayer}");
         }
     }
     private static void PrintCapturedPieces(ChessMatch match)

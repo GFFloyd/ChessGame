@@ -37,7 +37,8 @@ internal class Program
                     Console.ReadLine();
                 }
             }
-
+            Console.Clear();
+            Screen.PrintMatch(match);
         }
         catch (BoardException e)
         {

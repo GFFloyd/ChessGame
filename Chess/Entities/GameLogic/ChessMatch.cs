@@ -51,8 +51,16 @@ internal class ChessMatch
         {
             Check = false;
         }
-        Turn++;
-        ChangePlayer();
+
+        if (IsItCheckMate(Opponent(CurrentPlayer)))
+        {
+            IsFinished = true;
+        }
+        else
+        {
+            Turn++;
+            ChangePlayer();
+        }
     }
 
     private void UndoMove(Position origin, Position target, Piece capturedPiece)
@@ -123,10 +131,10 @@ internal class ChessMatch
         //this method is used to check which pieces are the opponent's or not
         return color == PieceColor.White ? PieceColor.Black : PieceColor.White;
     }
-    private Piece? King(PieceColor color)
+    private Piece King(PieceColor color)
     {
         //this method is used to check if king is in check
-        foreach(Piece piece in PiecesInPlay)
+        foreach (Piece piece in PiecesInPlaySet(color))
         {
             if (piece is King)
             {
@@ -148,6 +156,36 @@ internal class ChessMatch
         }
         return false;
     }
+    public bool IsItCheckMate(PieceColor color)
+    {
+        if (!IsTheKingInCheck(color))
+        {
+            return false;
+        }
+        foreach (Piece piece in PiecesInPlaySet(color))
+        {
+            bool[,] booleanArray = piece.PossibleMovements();
+            for (int i = 0; i < Board.Row; i++)
+            {
+                for (int j = 0; j < Board.Column; j++)
+                {
+                    if (booleanArray[i, j])
+                    {
+                        Position origin = piece.Position;
+                        Position target = new Position(i, j);
+                        Piece capturedPiece = MakeMove(origin, target);
+                        bool testCheck = IsTheKingInCheck(color);
+                        UndoMove(origin, target, capturedPiece);
+                        if (!testCheck)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
     public void PlaceNewPiece(char row, char col, Piece piece)
     {
         Board.PlacePiece(piece, new AlgebraicNotation(row, col).ToPosition());
@@ -156,9 +194,10 @@ internal class ChessMatch
     public void StartingPosition()
     {
         //TODO: instanciate initial pieces into their respective places
-        PlaceNewPiece('a', '8', new Rook(Board, PieceColor.White));
-        PlaceNewPiece('c', '8', new Rook(Board, PieceColor.White));
-        PlaceNewPiece('d', '5', new King(Board, PieceColor.Black));
-        PlaceNewPiece('f', '5', new King(Board, PieceColor.White));
+        PlaceNewPiece('a', '8', new King(Board, PieceColor.Black));
+        PlaceNewPiece('b', '8', new Rook(Board, PieceColor.Black));
+        PlaceNewPiece('h', '7', new Rook(Board, PieceColor.White));
+        PlaceNewPiece('d', '1', new King(Board, PieceColor.White));
+        PlaceNewPiece('c', '1', new Rook(Board, PieceColor.White));
     }
 }
