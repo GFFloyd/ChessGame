@@ -42,7 +42,7 @@ internal abstract class Piece
         }
         return false;
     }
-    public bool CanMoveTo(Position origin)
+    public bool CheckIfItCanMoveTo(Position origin)
     {
         return PossibleMovements()[origin.Row, origin.Column];
     }

@@ -11,8 +11,70 @@ internal class Pawn : Piece
     {
         return "P";
     }
+    private bool ThereIsOpponentPiece(Position position)
+    {
+        Piece piece = ChessBoard.Piece(position);
+        return piece != null && piece.Color != Color;
+    }
+    private bool FreeMovement(Position position)
+    {
+        return ChessBoard.Piece(position) != null;
+    }
     public override bool[,] PossibleMovements()
     {
-        throw new NotImplementedException();
+        bool[,] possibleMovesArray = new bool[ChessBoard.Row, ChessBoard.Column];
+
+        Position position = new Position(0, 0);
+
+        if (Color == PieceColor.White)
+        {
+
+            position.DefineValues(Position.Row - 1, Position.Column);
+            if (ChessBoard.IsItAValidPosition(position) && FreeMovement(position))
+            {
+                possibleMovesArray[position.Row, position.Column] = true;
+            }
+            position.DefineValues(Position.Row - 2, Position.Column);
+            if (ChessBoard.IsItAValidPosition(position) && FreeMovement(position) && Movements == 0)
+            {
+                possibleMovesArray[position.Row, position.Column] = true;
+            }
+            position.DefineValues(Position.Row - 1, Position.Column - 1);
+            if (ChessBoard.IsItAValidPosition(position) && ThereIsOpponentPiece(position))
+            {
+                possibleMovesArray[position.Row, position.Column] = true;
+            }
+            position.DefineValues(Position.Row - 1, Position.Column + 1);
+            if (ChessBoard.IsItAValidPosition(position) && ThereIsOpponentPiece(position))
+            {
+                possibleMovesArray[position.Row, position.Column] = true;
+            }
+        }
+        else
+        {
+            position.DefineValues(Position.Row + 1, Position.Column);
+            if (ChessBoard.IsItAValidPosition(position) && FreeMovement(position))
+            {
+                possibleMovesArray[position.Row, position.Column] = true;
+            }
+            position.DefineValues(Position.Row + 2, Position.Column);
+            if (ChessBoard.IsItAValidPosition(position) && FreeMovement(position) && Movements == 0)
+            {
+                possibleMovesArray[position.Row, position.Column] = true;
+            }
+            position.DefineValues(Position.Row + 1, Position.Column - 1);
+            if (ChessBoard.IsItAValidPosition(position) && ThereIsOpponentPiece(position))
+            {
+                possibleMovesArray[position.Row, position.Column] = true;
+            }
+            position.DefineValues(Position.Row + 1, Position.Column + 1);
+            if (ChessBoard.IsItAValidPosition(position) && ThereIsOpponentPiece(position))
+            {
+                possibleMovesArray[position.Row, position.Column] = true;
+            }
+        }
+
+
+        return possibleMovesArray;
     }
 }

@@ -92,7 +92,7 @@ internal class ChessMatch
     }
     public void ValidateTargetPosition(Position origin, Position target)
     {
-        if (!Board.Piece(origin).CanMoveTo(target))
+        if (!Board.Piece(origin).CheckIfItCanMoveTo(target))
         {
             throw new BoardException("Target position is invalid");
         }
@@ -199,5 +199,8 @@ internal class ChessMatch
         PlaceNewPiece('h', '7', new Rook(Board, PieceColor.White));
         PlaceNewPiece('d', '1', new King(Board, PieceColor.White));
         PlaceNewPiece('c', '1', new Rook(Board, PieceColor.White));
+        PlaceNewPiece('g', '3', new Bishop(Board, PieceColor.White));
+        PlaceNewPiece('a', '7', new Queen(Board, PieceColor.Black));
+        PlaceNewPiece('e', '5', new Knight(Board, PieceColor.Black));
     }
 }
