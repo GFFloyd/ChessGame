@@ -137,12 +137,16 @@ internal class Screen
     public static AlgebraicNotation ReadPosition()
     {
         string str = Console.ReadLine() ?? string.Empty;
-        if (str == string.Empty)
+        if (str.Length != 2)
         {
             throw new BoardException("You must type a valid Origin/Target");
         }
         char col = str[0];
         char row = str[1];
+        if (col < 'a' || col > 'h' || row < '1' || row > '8')
+        {
+            throw new BoardException("You must type a character (a - h), then a number (1 - 8)");
+        }
         return new AlgebraicNotation(col, row);
     }
 }

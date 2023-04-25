@@ -4,7 +4,7 @@ namespace Chess.Entities.GameLogic;
 
 internal class King : Piece
 {
-    private ChessMatch _chessMatch;
+    private readonly ChessMatch _chessMatch;
 
     public King(Board board, PieceColor color, ChessMatch chessMatch) : base(board, color)
     {

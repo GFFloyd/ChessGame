@@ -4,8 +4,10 @@ namespace Chess.Entities.GameLogic;
 
 internal class Pawn : Piece
 {
-    public Pawn(Board board, PieceColor color) : base(board, color)
+    private readonly ChessMatch _chessMatch;
+    public Pawn(Board board, PieceColor color, ChessMatch chessMatch) : base(board, color)
     {
+        _chessMatch = chessMatch;
     }
     public override string ToString()
     {
@@ -49,6 +51,23 @@ internal class Pawn : Piece
             {
                 possibleMovesArray[position.Row, position.Column] = true;
             }
+            //En Passant logic for white
+            if (Position.Row == 3)
+            //This looks like a magic number, but when you're playing white;
+            //the only row that you can make an en passant move is the third
+            //(in the boolean 2d array) in algebraic notation is the 5th row.
+            {
+                Position left = new(Position.Row, Position.Column - 1);
+                if (ChessBoard.IsItAValidPosition(left) && ThereIsOpponentPiece(left) && ChessBoard.Piece(left) == _chessMatch.EnPassantVulnerability)
+                {
+                    possibleMovesArray[left.Row - 1, left.Column] = true;
+                }
+                Position right = new(Position.Row, Position.Column + 1);
+                if (ChessBoard.IsItAValidPosition(right) && ThereIsOpponentPiece(right) && ChessBoard.Piece(right) == _chessMatch.EnPassantVulnerability)
+                {
+                    possibleMovesArray[right.Row - 1, right.Column] = true;
+                }
+            }
         }
         else
         {
@@ -72,6 +91,22 @@ internal class Pawn : Piece
             if (ChessBoard.IsItAValidPosition(position) && ThereIsOpponentPiece(position))
             {
                 possibleMovesArray[position.Row, position.Column] = true;
+            }
+            //En Passant Logic for black
+            if (Position.Row == 4)
+            //Black's en passant can only happen in the fourth row of the boolean 2d array
+            //or the fourth row in algebraic notation
+            {
+                Position left = new(Position.Row, Position.Column - 1);
+                if (ChessBoard.IsItAValidPosition(left) && ThereIsOpponentPiece(left) && ChessBoard.Piece(left) == _chessMatch.EnPassantVulnerability)
+                {
+                    possibleMovesArray[left.Row + 1, left.Column] = true;
+                }
+                Position right = new(Position.Row, Position.Column + 1);
+                if (ChessBoard.IsItAValidPosition(right) && ThereIsOpponentPiece(right) && ChessBoard.Piece(right) == _chessMatch.EnPassantVulnerability)
+                {
+                    possibleMovesArray[right.Row + 1, right.Column] = true;
+                }
             }
         }
         return possibleMovesArray;

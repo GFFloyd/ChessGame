@@ -11,6 +11,7 @@ internal class ChessMatch
     private HashSet<Piece> PiecesInPlay { get; set; }
     private HashSet<Piece> CapturedPieces { get; set; }
     public bool Check { get; private set; }
+    public Piece? EnPassantVulnerability { get; private set; }
 
     public ChessMatch()
     {
@@ -21,6 +22,7 @@ internal class ChessMatch
         CapturedPieces = new HashSet<Piece>();
         PiecesInPlay = new HashSet<Piece>();
         Check = false;
+        EnPassantVulnerability = null;
         StartingPosition();
     }
     public Piece MakeMove(Position origin, Position target)
@@ -50,6 +52,24 @@ internal class ChessMatch
             Piece rook = Board.TakePiece(rookOrigin);
             rook.IncrementMovimentQuantity();
             Board.PlacePiece(rook, rookTarget);
+        }
+        //En Passant Move
+        if (piece is Pawn)
+        {
+            if (origin.Column != target.Column && capturedPiece == null)
+            {
+                Position pawnPosition;
+                if (piece.Color == PieceColor.White)
+                {
+                    pawnPosition = new(target.Row + 1, target.Column);
+                }
+                else
+                {
+                    pawnPosition = new(target.Row - 1, target.Column);
+                }
+                capturedPiece = Board.TakePiece(pawnPosition);
+                CapturedPieces.Add(capturedPiece);
+            }
         }
         return capturedPiece;
     }
@@ -81,6 +101,24 @@ internal class ChessMatch
             rook.DecrementMovementQuantity();
             Board.PlacePiece(rook, rookOrigin);
         }
+        //En Passant Undo
+        if (piece is Pawn)
+        {
+            if (origin.Column != target.Column && capturedPiece != EnPassantVulnerability)
+            {
+                Piece pawn = Board.TakePiece(target);
+                Position pawnPosition;
+                if (piece.Color == PieceColor.White)
+                {
+                    pawnPosition = new(3, target.Column);
+                }
+                else
+                {
+                    pawnPosition = new(4, target.Column);
+                }
+                Board.PlacePiece(pawn, pawnPosition);
+            }
+        }
     }
     public void GamePlay(Position origin, Position target)
     {
@@ -107,6 +145,16 @@ internal class ChessMatch
         {
             Turn++;
             ChangePlayer();
+        }
+        //En passant move
+        Piece piece = Board.Piece(target);
+        if (piece is Pawn && (target.Row == origin.Row - 2 || target.Row == origin.Row + 2))
+        {
+            EnPassantVulnerability = piece;
+        }
+        else
+        {
+            EnPassantVulnerability = null;
         }
     }
     public void ValidateOriginPosition(Position origin)
@@ -238,7 +286,7 @@ internal class ChessMatch
         PlaceNewPiece('h', '1', new Rook(Board, PieceColor.White));
         for (char i = 'a'; i <= 'h'; i++)
         {
-            PlaceNewPiece(i, '2', new Pawn(Board, PieceColor.White));
+            PlaceNewPiece(i, '2', new Pawn(Board, PieceColor.White, this));
         }
         //Black pieces
         PlaceNewPiece('a', '8', new Rook(Board, PieceColor.Black));
@@ -251,7 +299,7 @@ internal class ChessMatch
         PlaceNewPiece('h', '8', new Rook(Board, PieceColor.Black));
         for (char i = 'a'; i <= 'h'; i++)
         {
-            PlaceNewPiece(i, '7', new Pawn(Board, PieceColor.Black));
+            PlaceNewPiece(i, '7', new Pawn(Board, PieceColor.Black, this));
         }
     }
 }
