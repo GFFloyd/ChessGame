@@ -33,7 +33,54 @@ internal class ChessMatch
         {
             CapturedPieces.Add(capturedPiece);
         }
+        //Small Castling Move
+        if (piece is King && target.Column == origin.Column + 2)
+        {
+            Position rookOrigin = new(origin.Row, origin.Column + 3);
+            Position rookTarget = new(origin.Row, origin.Column + 1);
+            Piece rook = Board.TakePiece(rookOrigin);
+            rook.IncrementMovimentQuantity();
+            Board.PlacePiece(rook, rookTarget);
+        }
+        //Long Castling Move
+        if (piece is King && target.Column == origin.Column - 2)
+        {
+            Position rookOrigin = new(origin.Row, origin.Column - 4);
+            Position rookTarget = new(origin.Row, origin.Column - 1);
+            Piece rook = Board.TakePiece(rookOrigin);
+            rook.IncrementMovimentQuantity();
+            Board.PlacePiece(rook, rookTarget);
+        }
         return capturedPiece;
+    }
+    private void UndoMove(Position origin, Position target, Piece capturedPiece)
+    {
+        Piece piece = Board.TakePiece(target);
+        piece.DecrementMovementQuantity();
+        if (capturedPiece != null)
+        {
+            Board.PlacePiece(capturedPiece, target);
+            CapturedPieces.Remove(capturedPiece);
+        }
+        Board.PlacePiece(piece, origin);
+        //Small Castling Undo
+        if (piece is King && target.Column == origin.Column + 2)
+        {
+            Position rookOrigin = new(origin.Row, origin.Column + 3);
+            Position rookTarget = new(origin.Row, origin.Column + 1);
+            Piece rook = Board.TakePiece(rookTarget);
+            rook.DecrementMovementQuantity();
+            Board.PlacePiece(rook, rookOrigin);
+        }
+        //Long Castling Undo
+        if (piece is King && target.Column == origin.Column - 2)
+        {
+            Position rookOrigin = new(origin.Row, origin.Column - 4);
+            Position rookTarget = new(origin.Row, origin.Column - 1);
+            Piece rook = Board.TakePiece(rookTarget);
+            rook.DecrementMovementQuantity();
+            Board.PlacePiece(rook, rookOrigin);
+        }
     }
     public void GamePlay(Position origin, Position target)
     {
@@ -62,19 +109,6 @@ internal class ChessMatch
             ChangePlayer();
         }
     }
-
-    private void UndoMove(Position origin, Position target, Piece capturedPiece)
-    {
-        Piece piece = Board.TakePiece(target);
-        piece.DecrementMovementQuantity();
-        if (capturedPiece != null)
-        {
-            Board.PlacePiece(capturedPiece, target);
-            CapturedPieces.Remove(capturedPiece);
-        }
-        Board.PlacePiece(piece, origin);
-    }
-
     public void ValidateOriginPosition(Position origin)
     {
         if (Board.Piece(origin) == null)
@@ -193,14 +227,31 @@ internal class ChessMatch
     }
     public void StartingPosition()
     {
-        //TODO: instanciate initial pieces into their respective places
-        PlaceNewPiece('a', '8', new King(Board, PieceColor.Black));
-        PlaceNewPiece('b', '8', new Rook(Board, PieceColor.Black));
-        PlaceNewPiece('h', '7', new Rook(Board, PieceColor.White));
-        PlaceNewPiece('d', '1', new King(Board, PieceColor.White));
-        PlaceNewPiece('c', '1', new Rook(Board, PieceColor.White));
-        PlaceNewPiece('g', '3', new Bishop(Board, PieceColor.White));
-        PlaceNewPiece('a', '7', new Queen(Board, PieceColor.Black));
-        PlaceNewPiece('e', '5', new Knight(Board, PieceColor.Black));
+        //White pieces
+        PlaceNewPiece('a', '1', new Rook(Board, PieceColor.White));
+        PlaceNewPiece('b', '1', new Knight(Board, PieceColor.White));
+        PlaceNewPiece('c', '1', new Bishop(Board, PieceColor.White));
+        PlaceNewPiece('d', '1', new Queen(Board, PieceColor.White));
+        PlaceNewPiece('e', '1', new King(Board, PieceColor.White, this));
+        PlaceNewPiece('f', '1', new Bishop(Board, PieceColor.White));
+        PlaceNewPiece('g', '1', new Knight(Board, PieceColor.White));
+        PlaceNewPiece('h', '1', new Rook(Board, PieceColor.White));
+        for (char i = 'a'; i <= 'h'; i++)
+        {
+            PlaceNewPiece(i, '2', new Pawn(Board, PieceColor.White));
+        }
+        //Black pieces
+        PlaceNewPiece('a', '8', new Rook(Board, PieceColor.Black));
+        PlaceNewPiece('b', '8', new Knight(Board, PieceColor.Black));
+        PlaceNewPiece('c', '8', new Bishop(Board, PieceColor.Black));
+        PlaceNewPiece('d', '8', new Queen(Board, PieceColor.Black));
+        PlaceNewPiece('e', '8', new King(Board, PieceColor.Black, this));
+        PlaceNewPiece('f', '8', new Bishop(Board, PieceColor.Black));
+        PlaceNewPiece('g', '8', new Knight(Board, PieceColor.Black));
+        PlaceNewPiece('h', '8', new Rook(Board, PieceColor.Black));
+        for (char i = 'a'; i <= 'h'; i++)
+        {
+            PlaceNewPiece(i, '7', new Pawn(Board, PieceColor.Black));
+        }
     }
 }

@@ -76,7 +76,7 @@ internal class Screen
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine();
         }
-        Console.WriteLine("  abcdefgh");
+        Console.WriteLine("   a  b  c  d  e  f  g  h ");
     }
     public static void PrintBoard(Board board, bool[,] possibleMoves)
     {
@@ -112,25 +112,25 @@ internal class Screen
             }
             Console.WriteLine();
         }
-        Console.WriteLine("  abcdefgh");
+        Console.WriteLine("   a  b  c  d  e  f  g  h ");
     }
     public static void PrintPiece(Piece piece)
     {
         if (piece == null)
         {
-            Console.Write(" ");
+            Console.Write("   ");
         }
         else
         {
             if (piece.Color == PieceColor.White)
             {
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(piece);
+                Console.Write($" {piece} ");
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write(piece);
+                Console.Write($" {piece} ");
             }
         }
     }
