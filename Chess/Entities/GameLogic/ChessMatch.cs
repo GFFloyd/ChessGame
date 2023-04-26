@@ -128,6 +128,18 @@ internal class ChessMatch
             UndoMove(origin, target, capturedPiece);
             throw new BoardException("You can't put your king in check");
         }
+        Piece piece = Board.Piece(target);
+
+        //Pawn promotion
+        if (piece is Pawn)
+        {
+            if ((piece.Color == PieceColor.White && target.Row == 0) || (piece.Color == PieceColor.Black && target.Row == 7))
+            {
+                piece = Board.TakePiece(target);
+                PiecesInPlay.Remove(piece);
+                PawnPromotion(piece.Color, target);
+            }
+        }
         if (IsTheKingInCheck(Opponent(CurrentPlayer)))
         {
             Check = true;
@@ -147,7 +159,6 @@ internal class ChessMatch
             ChangePlayer();
         }
         //En passant move
-        Piece piece = Board.Piece(target);
         if (piece is Pawn && (target.Row == origin.Row - 2 || target.Row == origin.Row + 2))
         {
             EnPassantVulnerability = piece;
@@ -157,6 +168,35 @@ internal class ChessMatch
             EnPassantVulnerability = null;
         }
     }
+
+    private Piece PawnPromotion(PieceColor color, Position target)
+    {
+        Console.WriteLine("Choose which piece you want the pawn to promote to:");
+        Console.WriteLine("Q for Queen, B for Bishop, K for Knight or R for Rook");
+        string str = Console.ReadLine().ToUpper();
+        Piece piece;
+        switch (str)
+        {
+            case "Q":
+                piece = new Queen(Board, color);
+                break;
+            case "B":
+                piece = new Bishop(Board, color);
+                break;
+            case "K":
+                piece = new Knight(Board, color);
+                break;
+            case "R":
+                piece = new Rook(Board, color);
+                break;
+            default:
+                throw new BoardException("Enter a valid character");
+        }
+        Board.PlacePiece(piece, target);
+        PiecesInPlay.Add(piece);
+        return piece;
+    }
+
     public void ValidateOriginPosition(Position origin)
     {
         if (Board.Piece(origin) == null)
@@ -281,9 +321,9 @@ internal class ChessMatch
         PlaceNewPiece('c', '1', new Bishop(Board, PieceColor.White));
         PlaceNewPiece('d', '1', new Queen(Board, PieceColor.White));
         PlaceNewPiece('e', '1', new King(Board, PieceColor.White, this));
-        PlaceNewPiece('f', '1', new Bishop(Board, PieceColor.White));
-        PlaceNewPiece('g', '1', new Knight(Board, PieceColor.White));
-        PlaceNewPiece('h', '1', new Rook(Board, PieceColor.White));
+        //PlaceNewPiece('f', '1', new Bishop(Board, PieceColor.White));
+        //PlaceNewPiece('g', '1', new Knight(Board, PieceColor.White));
+        //PlaceNewPiece('h', '1', new Rook(Board, PieceColor.White));
         for (char i = 'a'; i <= 'h'; i++)
         {
             PlaceNewPiece(i, '2', new Pawn(Board, PieceColor.White, this));
@@ -294,12 +334,12 @@ internal class ChessMatch
         PlaceNewPiece('c', '8', new Bishop(Board, PieceColor.Black));
         PlaceNewPiece('d', '8', new Queen(Board, PieceColor.Black));
         PlaceNewPiece('e', '8', new King(Board, PieceColor.Black, this));
-        PlaceNewPiece('f', '8', new Bishop(Board, PieceColor.Black));
-        PlaceNewPiece('g', '8', new Knight(Board, PieceColor.Black));
-        PlaceNewPiece('h', '8', new Rook(Board, PieceColor.Black));
-        for (char i = 'a'; i <= 'h'; i++)
-        {
-            PlaceNewPiece(i, '7', new Pawn(Board, PieceColor.Black, this));
-        }
+        //PlaceNewPiece('f', '8', new Bishop(Board, PieceColor.Black));
+        //PlaceNewPiece('g', '8', new Knight(Board, PieceColor.Black));
+        //PlaceNewPiece('h', '8', new Rook(Board, PieceColor.Black));
+        //    for (char i = 'a'; i <= 'h'; i++)
+        //    {
+        //        PlaceNewPiece(i, '7', new Pawn(Board, PieceColor.Black, this));
+        //    }
     }
 }
