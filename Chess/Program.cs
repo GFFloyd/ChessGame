@@ -12,23 +12,33 @@ internal class Program
             ChessMatch match = new ChessMatch();
             while (!match.IsFinished)
             {
-                Console.Clear();
-                Screen.PrintBoard(match.Board);
+                try
+                {
+                    Console.Clear();
+                    Screen.PrintMatch(match);
+                    Console.Write("Origin: ");
+                    Position origin = Screen.ReadPosition().ToPosition();
+                    match.ValidateOriginPosition(origin);
 
-                Console.Write("Origin: ");
-                Position origin = Screen.ReadPosition().ToPosition();
-                
 
-                bool[,] possibleMoves = match.Board.Piece(origin).PossibleMovements();
-                Console.Clear();
-                Screen.PrintBoard(match.Board, possibleMoves);
+                    bool[,] possibleMoves = match.Board.Piece(origin).PossibleMovements();
+                    Console.Clear();
+                    Screen.PrintBoard(match.Board, possibleMoves);
 
-                Console.Write("Target: ");
-                Position target = Screen.ReadPosition().ToPosition();
+                    Console.Write("Target: ");
+                    Position target = Screen.ReadPosition().ToPosition();
+                    match.ValidateTargetPosition(origin, target);
 
-                match.MakeMove(origin, target);
+                    match.GamePlay(origin, target);
+                }
+                catch (BoardException e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.ReadLine();
+                }
             }
-
+            Console.Clear();
+            Screen.PrintMatch(match);
         }
         catch (BoardException e)
         {

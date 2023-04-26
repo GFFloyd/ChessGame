@@ -5,6 +5,47 @@ namespace Chess;
 
 internal class Screen
 {
+    public static void PrintMatch(ChessMatch match)
+    {
+        Screen.PrintBoard(match.Board);
+        Console.WriteLine();
+        PrintCapturedPieces(match);
+        Console.WriteLine($"Turn: {match.Turn}");
+        if (!match.IsFinished)
+        {
+            Console.WriteLine($"Awaiting move by {match.CurrentPlayer}");
+            if (match.Check)
+            {
+                Console.WriteLine("YOU ARE IN CHECK");
+            }
+        }
+        else
+        {
+            Console.WriteLine("CHECK-MATE");
+            Console.WriteLine($"Winner: {match.CurrentPlayer}");
+        }
+    }
+    private static void PrintCapturedPieces(ChessMatch match)
+    {
+        Console.WriteLine("Captured pieces:");
+        Console.Write("White:");
+        PrintSet(match.CapturedPiecesSet(PieceColor.White));
+        Console.WriteLine();
+        Console.Write("Black:");
+        PrintSet(match.CapturedPiecesSet(PieceColor.Black));
+        Console.WriteLine();
+    }
+
+    private static void PrintSet(HashSet<Piece> pieces)
+    {
+        Console.Write("[");
+        foreach (Piece piece in pieces)
+        {
+            Console.Write($"{piece}");
+        }
+        Console.Write("]");
+    }
+
     public static void PrintBoard(Board board)
     {
         ConsoleColor whiteSquares = ConsoleColor.DarkYellow;
@@ -35,7 +76,7 @@ internal class Screen
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine();
         }
-        Console.WriteLine("  abcdefgh");
+        Console.WriteLine("   a  b  c  d  e  f  g  h ");
     }
     public static void PrintBoard(Board board, bool[,] possibleMoves)
     {
@@ -71,33 +112,41 @@ internal class Screen
             }
             Console.WriteLine();
         }
-        Console.WriteLine("  abcdefgh");
+        Console.WriteLine("   a  b  c  d  e  f  g  h ");
     }
     public static void PrintPiece(Piece piece)
     {
         if (piece == null)
         {
-            Console.Write(" ");
+            Console.Write("   ");
         }
         else
         {
             if (piece.Color == PieceColor.White)
             {
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(piece);
+                Console.Write($" {piece} ");
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write(piece);
+                Console.Write($" {piece} ");
             }
         }
     }
     public static AlgebraicNotation ReadPosition()
     {
-        string str = Console.ReadLine();
+        string str = Console.ReadLine() ?? string.Empty;
+        if (str.Length != 2)
+        {
+            throw new BoardException("You must type a valid Origin/Target");
+        }
         char col = str[0];
         char row = str[1];
+        if (col < 'a' || col > 'h' || row < '1' || row > '8')
+        {
+            throw new BoardException("You must type a character (a - h), then a number (1 - 8)");
+        }
         return new AlgebraicNotation(col, row);
     }
 }

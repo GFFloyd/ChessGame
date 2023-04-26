@@ -13,7 +13,7 @@ internal class Rook : Piece
     }
     public override bool[,] PossibleMovements()
     {
-        bool[,] booleanArray = new bool[ChessBoard.Row, ChessBoard.Column];
+        bool[,] possibleMovesArray = new bool[ChessBoard.Row, ChessBoard.Column];
 
         Position position = new Position(0, 0);
 
@@ -25,9 +25,9 @@ internal class Rook : Piece
                 if (i != j && i != -j)
                 {
                     position.DefineValues(Position.Row + i, Position.Column + j);
-                    while (ChessBoard.ValidPosition(position) && CanMove(position))
+                    while (ChessBoard.IsItAValidPosition(position) && CanMove(position))
                     {
-                        booleanArray[position.Row, position.Column] = true;
+                        possibleMovesArray[position.Row, position.Column] = true;
                         //if there's a piece in a square or if it's an oppposite color piece, the loop breaks
                         if (ChessBoard.Piece(position) != null && ChessBoard.Piece(position).Color != Color)
                         {
@@ -53,6 +53,6 @@ internal class Rook : Piece
                 }
             }
         }
-        return booleanArray;
+        return possibleMovesArray;
     }
 }
